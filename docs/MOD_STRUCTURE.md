@@ -216,6 +216,37 @@ Source of truth is the XML, one file per language:
 mod/meta/Localization/<Language>/KnuckleDusters.xml
 ```
 
+### The .loca binary format (read this before touching localization)
+
+BG3's `.loca` is **not** the DOS2-era layout. It is a two-part file:
+
+```
+"LOCA"                       char[4]
+uint32  entryCount
+uint32  textBlockOffset      (== 12 + entryCount * 70)
+entryCount × 70 bytes:
+    char   key[64]           handle WITHOUT the ";version" suffix, NUL padded
+    uint16 unknown           always 1
+    uint32 textLen           byte length of the UTF-8 text, INCLUDING its NUL
+text block: UTF-8 strings back to back, each NUL terminated
+```
+
+A file written in the old DOS2 layout (``key[64] + uint16 len + inline UTF-16``) is
+accepted by the engine without any error but **loads zero strings** — every handle then
+renders as `Not Found` while the rest of the mod (stats, templates) works fine. That
+failure mode cost a full debugging cycle; verify with ``loca_bg3.py --verify``.
+
+`mod/tools/loca_bg3.py` writes the correct format:
+
+```powershell
+python mod/tools/loca_bg3.py --rebuild-all        # XML -> .loca for all 13 languages
+python mod/tools/loca_bg3.py --verify <file.loca> # structural check + first entries
+python mod/tools/loca_bg3.py in.xml out.loca      # single file
+```
+
+Sanity check against a known-good mod: the same parser must read
+``5eSpellsCHS/Localization/Chinese/5eSpells.loca`` and print readable Chinese.
+
 ### Updating translations
 
 `mod/tools/gen_localization.py` holds the whole translation table (`T[<Language>][<key>]`)

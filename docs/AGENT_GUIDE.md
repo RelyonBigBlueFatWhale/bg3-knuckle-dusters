@@ -107,8 +107,18 @@ Language folder names are fixed by the game and must match exactly:
 BrazilianPortuguese Japanese Korean Chinese`. A misspelled folder is silently ignored and
 the player sees `Not Found`.
 
----
+### F. Localization silently loading nothing
 
+If every self-defined handle renders `Not Found` while stats/items work, suspect the
+`.loca` binary layout, not the file name or path:
+
+1. ``python mod/tools/loca_bg3.py --verify <file>.loca`` — must report the entry count and
+   readable text.
+2. Compare against a known-good mod: ``5eSpellsCHS/Localization/Chinese/5eSpells.loca``.
+3. Regenerate with ``loca_bg3.py``; the old ``loca.py`` (DOS2 inline UTF-16) is wrong for
+   BG3 and produces a file the engine reads as empty without any error.
+
+---
 ## 3. Build & deploy
 
 ```powershell
