@@ -1,0 +1,10 @@
+# Blender / build artifacts
+*.blend1
+*.blend2
+__pycache__/
+*.pyc
+.prepolish.png
+
+# local build output
+/dist/
+*.pak.bak
