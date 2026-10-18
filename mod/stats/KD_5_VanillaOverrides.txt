@@ -1,0 +1,71 @@
+// ============================================================================
+// 同名覆盖：武僧两支攻击法术（2026-10-18 修正）
+//
+// 三轮失败的真正原因：这两支法术在 **SharedDev** 层，之前只查了 Shared 与 Gustav，
+// 误判成"名字不存在"，于是把覆盖目标改成了 Target_Flurry / Target_UnarmedAttack
+// （前者是死条目、后者是另一种法术），结果一直空转。
+//
+// 它们原版的伤害链是**纯徒手**：
+//     DealDamage(UnarmedDamage, Bludgeoning)              （疾风连击：Cast2 打两下）
+//     DealDamage(UnarmedDamage, Bludgeoning)              （武艺：附赠打击）
+// 没有 MainMeleeWeapon、没有 ExecuteWeaponFunctors —— 所以元素武器/神圣恩宠这类
+// CharacterWeaponDamage 附伤无处附着，这就是用户看到"附伤不生效"的全部原因。
+//
+// 修法：原版 SpellSuccess **一字不改**，只在末尾追加两行武器伤害与武器 functor。
+// 追加而不是重写，保证语法沿用引擎已接受的形式；两下徒手打击照旧。
+// ============================================================================
+
+
+new entry "Target_FlurryOfBlows"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_UnarmedAttack"
+data "SpellRoll" "Attack(AttackType.MeleeWeaponAttack);Cast2[Attack(AttackType.MeleeWeaponAttack)]"
+data "WeaponTypes" "Melee"
+// KD_APPEND: 原版伤害链保持原样，只追加武器伤害与武器 functor
+data "SpellSuccess" "DealDamage(UnarmedDamage , Bludgeoning);Cast2[DealDamage(UnarmedDamage , Bludgeoning)];DealDamage(max(0,MainMeleeWeapon), MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand)"
+data "Icon" "Action_Monk_FlurryOfBlows"
+data "DisplayName" "h8ab721e5ga1c4g25deg2c8eg1c2d076129b5;1"
+data "Description" "h8ed549a4ga454g49b4gb319g7335ccf73b3a;6"
+data "TooltipDamageList" "DealDamage(MartialArtsUnarmedDamage, Bludgeoning);DealDamage(MartialArtsUnarmedDamage, Bludgeoning)"
+data "PrepareSound" "Vocal_Component_Monk_Damage"
+data "CastSound" "Spell_Cast_Monk_FlurryofBlows_L1to3"
+data "AlternativeCastTextEvents" "Cast2"
+data "UseCosts" "BonusActionPoint:1;KiPoint:1"
+data "SpellAnimation" "3acc079d-c27c-4568-9205-61150621c271,,;55562ea5-4c1c-4682-a824-d65a4e647ae8,,;b62ae1c7-0846-41ce-8377-780c90cf1ff5,,;a6456c59-0ad3-4311-a5d8-02bce73ac18a,,;b3299f52-cd3a-47a3-8432-2f97777c04c4,,;,,;0b07883a-08b8-43b6-ac18-84dc9e84ff50,,;,,;,,"
+data "VerbalIntent" "Damage"
+data "SpellStyleGroup" "Class"
+data "SpellFlags" "IsAttack;IsMelee;IsHarmful;DisableBlood"
+data "SpellAnimationIntentType" "Aggressive"
+data "PrepareEffect" "d8ea7a73-027c-4472-b638-2b939d384900"
+data "CastEffect" "57a6a6b3-a088-4b90-9777-683963616236"
+data "TargetEffect" "dc8efa81-182b-4446-82ac-5e0e4c5f87d0"
+data "DamageType" "Bludgeoning"
+data "Sheathing" "Sheathed"
+
+new entry "Target_UnarmedStrike_Monk"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_UnarmedAttack"
+data "SpellProperties" "IF(not Player(context.Source)):ApplyStatus(SELF,AI_HELPER_EXTRAATTACK,100,1);RemoveStatus(SELF,MARTIAL_ARTS_BONUS_UNARMED_STRIKE)"
+data "RequirementConditions" "not HasStatus('SG_Polymorph_BeastShape')"
+data "SpellRoll" "Attack(AttackType.MeleeWeaponAttack)"
+data "WeaponTypes" "Melee"
+// KD_APPEND: 原版伤害链保持原样，只追加武器伤害与武器 functor
+data "SpellSuccess" "DealDamage(UnarmedDamage , Bludgeoning);DealDamage(max(0,MainMeleeWeapon), MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand)"
+data "Icon" "Action_Monk_FreeUnarmedStrike"
+data "DisplayName" "h1e0c7a16g49edgefaag4d7cg6dcddf3e60ed;1"
+data "Description" "hefec7f3fg7e34g4a1ag97a4gc4223e9e32b4;2"
+data "TooltipDamageList" "DealDamage(MartialArtsUnarmedDamage, Bludgeoning)"
+data "PrepareSound" "Vocal_Component_Monk_Damage"
+data "CastSound" "Spell_Cast_Monk_UnarmedStrike_L1to3"
+data "TargetSound" "Spell_Impact_Monk_UnarmedStrike_L1to3"
+data "UseCosts" "BonusActionPoint:1"
+data "SpellAnimation" "8b8bb757-21ce-4e02-a2f3-97d55cf2f90b,,;0579f797-dd8e-408d-b18d-01650f6041e2,,;69345989-e868-432e-9d8c-84f4bcf77494,,;5925204d-590c-4d7c-ac62-a51ba44d4589,,;7bb52cd4-0b1c-4926-9165-fa92b75876a3,,;,,;0b07883a-08b8-43b6-ac18-84dc9e84ff50,,;,,;,,"
+data "DualWieldingSpellAnimation" "8b8bb757-21ce-4e02-a2f3-97d55cf2f90b,,;0579f797-dd8e-408d-b18d-01650f6041e2,,;69345989-e868-432e-9d8c-84f4bcf77494,,;5925204d-590c-4d7c-ac62-a51ba44d4589,,;7bb52cd4-0b1c-4926-9165-fa92b75876a3,,;,,;0b07883a-08b8-43b6-ac18-84dc9e84ff50,,;,,;,,"
+data "VerbalIntent" "Damage"
+data "SpellStyleGroup" "Class"
+data "SpellFlags" "IsAttack;IsMelee;IsHarmful;Temporary;DisableBlood"
+data "CastEffect" "9d8f170e-35d7-4cdb-b1f9-5493cf771b19"
+data "DamageType" "Bludgeoning"
+data "Sheathing" "DontChange"

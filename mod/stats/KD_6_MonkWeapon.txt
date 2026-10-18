@@ -1,0 +1,22 @@
+// ============================================================================
+// 武僧武器标记被动（2026-10-18）
+//
+// 目的：让指虎同时具备两种身份 ——
+//   ① 引擎按「武器攻击」结算  ⇒ 神圣武器/元素武器这类武器侧附伤有落点；
+//   ② IsMonkWeaponAttack() 为真 ⇒ 武僧的疾风连击、武艺、附赠徒手打击照常适用。
+//
+// 写法照抄原版 MartialArts_DextrousUnarmedAttacks（SharedDev / Passive.txt）：
+// 那个被动只有三行关键内容 —— BoostContext、BoostConditions、Boosts。
+// **BoostContext 是必须的**：它决定在哪些时机重新上台求值 Boost。我们之前那些
+// 带 IF(...) 的伤害修饰都没写这个字段，实测条件被无声丢弃（无条件生效），
+// 很可能就是这个原因。
+//
+// 这个被动刻意不写 BoostConditions（无条件生效），因为"戴上指虎就算武僧武器"
+// 本身就是我们要的效果；真正的限制来自武器是否被装备。
+// ============================================================================
+
+new entry "KD_MonkWeapon"
+type "PassiveData"
+data "Properties" "IsHidden"
+data "BoostContext" "OnStatusApply;OnStatusRemove;OnEquip;OnShortRest;OnCreate;OnLongRest;OnInventoryChanged"
+data "Boosts" "MonkWeaponAttackOverride();MonkWeaponDamageDiceOverride(LevelMapValue(MartialArts))"

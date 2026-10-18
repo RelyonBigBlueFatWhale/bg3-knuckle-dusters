@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<contentList>
+	<content contentuid="h6504b930gf358g4889g938cg7eaa90df79af" version="1">강철 가시 주먹</content>
+	<content contentuid="hf40daf82gd785g4612g9fe2gbe012e9846f5" version="1">가시가 달린 강철 너클 더스터 한 쌍. 주 손으로 하는 공격은 여전히 맨손 공격으로 판정된다. 가시는 명중 시 살점을 찢는다.</content>
+	<content contentuid="h4286f685g0c99g44a8g8821ga2a247361b8d" version="1">뼈의 한기</content>
+	<content contentuid="hef75a393g9ecbg4243g8a8fg1bb932c8da71" version="1">냉기로 벼려낸 너클 더스터. 흠뻑 젖은 대상에게는 한기가 뼛속까지 스며든다.</content>
+	<content contentuid="h8fc8470egf624g4266ga9dcg8368d8df1df9" version="1">날을 세우지 않은 자</content>
+	<content contentuid="h08c974e9g87b2g480eg815cgfa295c1ae55d" version="1">날은 없고 오직 무게뿐. 한때 판금 갑옷과 그 안의 사람을 통째로 쇳가루로 만들었다고 한다.</content>
+	<content contentuid="h0011a0abg57c7g43e8g8f71gb0a8ec398445" version="1">강철 주먹</content>
+	<content contentuid="h2637f832g0cd9g49b4gb8afgce8d87a2e42c" version="1">이 무기로 하는 주 손 공격은 맨손 공격으로 판정된다.</content>
+	<content contentuid="h26d44774g24d6g43f4gb606g2a91b9618fe9" version="1">강철 발톱</content>
+	<content contentuid="h9572dfa4g3098g4547g8fa8g9d6c22c4418e" version="1">맨손 공격이 1d4의 추가 관통 피해를 입히고, 20% 확률로 2턴 동안 출혈을 부여한다.</content>
+	<content contentuid="hd526e1deg48a6g4e5ag8f5eg09447aa6f787" version="1">꿰뚫는 냉기</content>
+	<content contentuid="h18c6f016g93e0g41c4gaab7g6f710dd22728" version="1">맨손 공격이 1d6의 추가 냉기 피해를 입히며, 젖은 대상에게는 2d6을 입힌다.</content>
+	<content contentuid="h66008c7cg95c8g425bg9cc4gd6d504715d6f" version="1">껍질 파괴자</content>
+	<content contentuid="h9e163f1dg7e7fg4acfga1dbgb6480bb117f6" version="1">맨손 공격이 2d10의 추가 타격 피해를 입히고 3턴 동안 균열을 부여한다.</content>
+	<content contentuid="h27456ed8g689fg455bgb82fg5728a2337fa4" version="1">너클 스트라이크</content>
+	<content contentuid="h548a5901g11b5g440fga3ecgce7dfb42063c" version="1">너클 더스터로 하는 근접 공격. 맨손 공격으로 판정된다.</content>
+	<content contentuid="ha1bb7f91g7120g4892g95c9gf0685d51e6c4" version="1">균열</content>
+	<content contentuid="hca0d6f4bg51cfg49ebga6c6g0fbb01bdf456" version="1">타격 피해에 취약. 2중첩이면 저항을 가진 대상도 약해진다.</content>
+</contentList>

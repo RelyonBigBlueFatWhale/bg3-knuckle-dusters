@@ -1,0 +1,44 @@
+// ============================================================================
+// 指虎上架：按品质分章解锁戴摩（Dammon）的货架
+//
+// 稀有(Rare) 钢刺之拳   → 第一章  DEN_Weaponsmith_Trade
+// 珍奇(VeryRare) 彻骨之寒 → 第二章  HAV_Weaponsmith_Trade
+// 传说(Legendary) 无锋   → 第三章  LOW_Weaponsmith_Trade
+//
+// 写法依据（bg3.wiki · Modding:Items §TreasureTable 官方示范）：
+//     new treasuretable "<原版表名>"
+//     CanMerge 1                      ← 关键：合并而不是替换
+//     new subtable "-1"               ← 保底 1 次（原版独特物品就用这个写法）
+//     object category "I_<模板名>",1,0,0,0,0,0,0,0
+//
+// 为什么必须 CanMerge：不加它时 `new treasuretable "<同名>"` 是**整表替换**，
+// 会把戴摩原有的独特物品与通用子表全部冲掉 —— 那就是污染。加了 CanMerge 只做追加。
+//
+// 表所在的数据层（本地解包核对）：
+//     DEN_Weaponsmith_Trade → Public/Gustav/Stats/Generated/TreasureTable.txt（511 张表）
+//     HAV_Weaponsmith_Trade → Public/GustavDev/...（539 张表）
+//     LOW_Weaponsmith_Trade → Public/GustavDev/...
+// 且 HAV_ 与 LOW_ 内部都有 `object category "T_DEN_Weaponsmith_Trade"`，
+// 所以第一章的稀有件在二三章会继续售卖（与原版"第一章商品三章都能买到"一致）。
+//
+// 验证方法：长休一次刷新商人库存，与戴摩交易，确认原货（狩猎短弓、守护之盾）仍在，
+// 同时出现对应品质的指虎。
+// ============================================================================
+
+// ---- 第一章：稀有 ----
+new treasuretable "DEN_Weaponsmith_Trade"
+CanMerge 1
+new subtable "-1"
+object category "I_KD_SteelSpikeFist",1,0,0,0,0,0,0,0
+
+// ---- 第二章：珍奇 ----
+new treasuretable "HAV_Weaponsmith_Trade"
+CanMerge 1
+new subtable "-1"
+object category "I_KD_BoneChill",1,0,0,0,0,0,0,0
+
+// ---- 第三章：传说 ----
+new treasuretable "LOW_Weaponsmith_Trade"
+CanMerge 1
+new subtable "-1"
+object category "I_KD_Unsharpened",1,0,0,0,0,0,0,0

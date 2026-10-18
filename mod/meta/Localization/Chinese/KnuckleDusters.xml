@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<contentList>
+	<content contentuid="h6504b930gf358g4889g938cg7eaa90df79af" version="1">钢刺之拳</content>
+	<content contentuid="hf40daf82gd785g4612g9fe2gbe012e9846f5" version="1">一套套在指节上的钢刺护手。以指虎出拳时，攻击仍按徒手结算；指节上的尖刺会在命中时撕开皮肉。</content>
+	<content contentuid="h4286f685g0c99g44a8g8821ga2a247361b8d" version="1">彻骨之寒</content>
+	<content contentuid="hef75a393g9ecbg4243g8a8fg1bb932c8da71" version="1">寒气凝成的指虎，握上去像攥着一把碎冰。对已经被水浸透的目标，寒意会顺着水渗进骨头里。</content>
+	<content contentuid="h8fc8470egf624g4266ga9dcg8368d8df1df9" version="1">无锋</content>
+	<content contentuid="h08c974e9g87b2g480eg815cgfa295c1ae55d" version="1">没有锋刃，只有纯粹的分量。传说它曾把一整套板甲连同里面的人一起打成了铁屑。</content>
+	<content contentuid="h0011a0abg57c7g43e8g8f71gb0a8ec398445" version="1">钢拳</content>
+	<content contentuid="h2637f832g0cd9g49b4gb8afgce8d87a2e42c" version="1">使用此武器时，主手攻击被视为徒手攻击。</content>
+	<content contentuid="h26d44774g24d6g43f4gb606g2a91b9618fe9" version="1">钢爪</content>
+	<content contentuid="h9572dfa4g3098g4547g8fa8g9d6c22c4418e" version="1">徒手攻击额外造成 1d4 穿刺伤害，并有 20% 概率使目标流血 2 回合。</content>
+	<content contentuid="hd526e1deg48a6g4e5ag8f5eg09447aa6f787" version="1">刺骨</content>
+	<content contentuid="h18c6f016g93e0g41c4gaab7g6f710dd22728" version="1">徒手攻击额外造成 1d6 寒冷伤害；若目标【濡湿】，再额外造成 1d6 寒冷伤害。</content>
+	<content contentuid="h66008c7cg95c8g425bg9cc4gd6d504715d6f" version="1">剥壳</content>
+	<content contentuid="h9e163f1dg7e7fg4acfga1dbgb6480bb117f6" version="1">徒手攻击额外造成 2d10 钝击伤害，并使目标【碎甲】3 回合。</content>
+	<content contentuid="h27456ed8g689fg455bgb82fg5728a2337fa4" version="1">指虎攻击</content>
+	<content contentuid="h548a5901g11b5g440fga3ecgce7dfb42063c" version="1">以指虎发动的近战攻击——判定与加成均按徒手攻击结算。</content>
+	<content contentuid="ha1bb7f91g7120g4892g95c9gf0685d51e6c4" version="1">碎甲</content>
+	<content contentuid="hca0d6f4bg51cfg49ebga6c6g0fbb01bdf456" version="1">获得钝击易伤。两层碎甲足以让原本抗钝击的目标也变得脆弱。</content>
+</contentList>

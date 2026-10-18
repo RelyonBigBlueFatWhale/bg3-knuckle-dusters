@@ -1,0 +1,64 @@
+// ============================================================================
+// 散打宗三支「疾风连击：X」变体的同名覆盖（2026-10-18）
+//
+// 为什么必须单独覆盖：这三支法术 using "Target_FlurryOfBlows"，但**自己重写了
+// SpellSuccess 与 SpellFlags**。所以改基类（SpellRoll / WeaponTypes / SpellSuccess /
+// IsAttack）对玩家真正按下的这一支毫无作用 —— 这就是"主手吃得到附伤、疾风连击吃不到"
+// 的最后一段原因。
+//
+// 做法：原版内容一字不改（动画、音效、DisplayName、消耗、散打宗特效 Force / PRONE /
+// NO_REACTIONS 全部保留），只做两件事：
+//   ① 在每一击的伤害链里插入「武器伤害 + 武器 functor」，两击都带；
+//   ② SpellFlags 补上 IsAttack（原版这几支是纯徒手法术，没有这个标志）。
+// ============================================================================
+
+
+new entry "Target_OpenHandTechnique_Push"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_FlurryOfBlows"
+data "ContainerSpells" ""
+data "SpellSuccess" "DealDamage(UnarmedDamage , Bludgeoning);DealDamage(max(0,MainMeleeWeapon), MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand);Cast2[DealDamage(UnarmedDamage , Bludgeoning);DealDamage(max(0,MainMeleeWeapon), MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand);IF(not SavingThrow(Ability.Strength, ManeuverSaveDC())):Force(5)]"
+data "Icon" "Action_Monk_OpenHandTechnique_Push"
+data "DisplayName" "hbe84fb72g12bag41e4ga606g8bb6420ea552;2"
+data "Description" "h72afe393gd62eg4d84g9429g6f67d5226e6c;5"
+data "DescriptionParams" "Distance(5)"
+data "TargetSound" "Spell_Impact_Monk_OpenHandTech_L1to3"
+data "SpellAnimation" "e1a544d9-209c-4928-aaa8-34158e755235,,;c06d3974-75cc-47db-94fc-58ffee6f6d9c,,;5fac68a4-bf82-471c-a3f1-f170652e5305,,;0f459162-778f-4bc4-97d0-f54130ec73be,,;4d79a581-a66e-49d3-a6bf-b7f66085cae4,,;37602812-a7a8-45a8-8cd3-2efa6f81f60d,,;0b07883a-08b8-43b6-ac18-84dc9e84ff50,,;,,;,,"
+data "SpellFlags" "IsAttack;IsMelee;IsHarmful;DisableBlood;AddFallDamageOnLand"
+data "PrepareEffect" "85386181-e9ec-4996-a1dd-7f09f3013189"
+data "CastEffect" "4aac52d4-55eb-4867-95b9-c8309bb48129"
+data "TargetEffect" "f02c259a-32ff-4667-80db-3a52f290081d"
+
+new entry "Target_OpenHandTechnique_Knock"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_FlurryOfBlows"
+data "ContainerSpells" ""
+data "SpellSuccess" "DealDamage(UnarmedDamage , Bludgeoning);DealDamage(max(0,MainMeleeWeapon), MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand);Cast2[DealDamage(UnarmedDamage , Bludgeoning);DealDamage(max(0,MainMeleeWeapon), MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand);IF(not SavingThrow(Ability.Dexterity, ManeuverSaveDC())):ApplyStatus(PRONE,100,1)]"
+data "Icon" "Action_Monk_OpenHandTechnique_Knock"
+data "DisplayName" "h2d00c757g34b5g4b17g8557g3fd46b41ad80;2"
+data "Description" "h9f56c138g8b3cg461egb39dg47b008ccfe3b;5"
+data "TooltipStatusApply" "ApplyStatus(PRONE,100,1)"
+data "TargetSound" "Spell_Impact_Monk_OpenHandTech_L1to3"
+data "SpellAnimation" "26fe0848-ce88-41c7-8184-4e405936cfd1,,;bb71ceb0-5636-40c6-8af3-eb6d98bcf5a4,,;4595e579-0b44-498f-8eb4-26375b9fe9fb,,;4fe5d677-2411-4e63-bfa1-bb449f7c6942,,;284c7d71-e6b8-4026-8b8f-f4a5da2e3183,,;c50242af-8b22-4f9f-a890-cd8e58b3ff70,,;0b07883a-08b8-43b6-ac18-84dc9e84ff50,,;,,;,,"
+data "SpellFlags" "IsAttack;IsMelee;IsHarmful;DisableBlood"
+data "PrepareEffect" "85386181-e9ec-4996-a1dd-7f09f3013189"
+data "CastEffect" "208b02ef-5847-493d-94b8-a901691979ef"
+data "TargetEffect" "82b8aad9-5031-41f8-a871-dc55eb52af88"
+
+new entry "Target_OpenHandTechnique_NoReactions"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_FlurryOfBlows"
+data "ContainerSpells" ""
+data "SpellSuccess" "DealDamage(UnarmedDamage , Bludgeoning);DealDamage(max(0,MainMeleeWeapon), MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand);Cast2[DealDamage(UnarmedDamage , Bludgeoning);DealDamage(max(0,MainMeleeWeapon), MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand);ApplyStatus(OPEN_HAND_NO_REACTIONS,100,1)]"
+data "Icon" "Action_Monk_OpenHandTechnique_NoReactions"
+data "DisplayName" "h10e929cfgdb5cg4969g942ag68be7c450b46;2"
+data "Description" "h89eded93gcedcg4913g925egee98ec3341d1;6"
+data "TooltipStatusApply" "ApplyStatus(OPEN_HAND_NO_REACTIONS,100,1)"
+data "TargetSound" "Spell_Impact_Monk_OpenHandTech_L1to3"
+data "SpellAnimation" "2e348409-bedb-4a37-8f2d-e879f40ca420,,;0b341bac-f564-4dc2-ae0c-36adf49c7e93,,;1340ccad-d59c-4e8b-9cf0-edecf6c82739,,;5a92e20c-3300-43f4-af06-d57df9999713,,;f59f036d-969f-4480-af65-c85138f58e85,,;88faa5d1-94bc-44c1-8d0b-3845c01a984a,,;0b07883a-08b8-43b6-ac18-84dc9e84ff50,,;,,;,,"
+data "SpellFlags" "IsAttack;IsMelee;IsHarmful;DisableBlood"
+data "PrepareEffect" "85386181-e9ec-4996-a1dd-7f09f3013189"
+data "TargetEffect" "cff54a9a-6f6d-4b1b-9d0e-4177302cd63d"

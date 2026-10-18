@@ -1,0 +1,117 @@
+// ============================================================================
+// 徒手打击覆盖面扩展（2026-10-18）
+//
+// 目的：让**任何**挂在指虎上的武器附伤（神圣武器、元素武器、以及别人后来加的）
+// 都能对"徒手打击"系列生效。附伤那一侧不需要枚举 —— 只要一支法术被改造成
+// 「武器攻击 + 伤害链含 MainMeleeWeapon/ExecuteWeaponFunctors」，所有武器侧
+// 附伤就都会自动进来。需要枚举的是**法术**，也就是这个文件。
+//
+// 扫描 Shared + SharedDev 里所有用 DealDamage(...UnarmedDamage...) 的法术，共 16 支。
+// 已覆盖（另在 KD_2 / KD_5 / KD_7）：主手攻击、Target_FlurryOfBlows、
+// Target_OpenHandTechnique_{Push,Knock,NoReactions}、Target_UnarmedStrike_Monk。
+// 本文件补上剩下 4 支仍在按纯徒手结算的：
+//   Target_UnarmedAttack（通用徒手攻击）、Target_StunningStrike_Unarmed（震慑拳）、
+//   Target_ShadowStrike_Instant_Unarmed（暗影步打击）、Target_KiResonation_Punch（气之共鸣）。
+//
+// 刻意不动：
+//   Target_ConcussiveSmash_* / Target_Slash_* / Target_PiercingThrust_*
+//       —— 这些是"灵体武器"召唤物的自身攻击，属于另一个实体；
+//   Projectile_FangsOfTheFireSnake / Projectile_Deflect_Missiles
+//       —— 一个是投射物、一个是反应，不是近战武器打击。
+//
+// 每支法术保留原动画、消耗、名称与特殊效果，只做四件事：
+//   ① SpellRoll → MeleeWeaponAttack；② 声明 WeaponTypes Melee；
+//   ③ 伤害链插入「武器伤害 + 武器 functor」；④ SpellFlags 补 IsAttack。
+// max(0, MainMeleeWeapon) 是安全阀：空手时取 0，与改动前完全一致。
+// ============================================================================
+
+
+new entry "Target_UnarmedAttack"
+type "SpellData"
+data "WeaponTypes" "Melee"
+data "SpellType" "Target"
+data "SpellProperties" "IF(not Player(context.Source)):ApplyStatus(SELF,AI_HELPER_EXTRAATTACK,100,1);"
+data "TargetCeiling" "0"
+data "TargetFloor" ".25"
+data "TargetRadius" "1.5"
+data "SpellRoll" "Attack(AttackType.MeleeWeaponAttack)"
+data "SpellSuccess" "DealDamage(UnarmedDamage , Bludgeoning);DealDamage(max(0,MainMeleeWeapon), MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand)"
+data "TargetConditions" "not Self() and not Dead()"
+data "Icon" "Action_UnarmedAttack"
+data "DisplayName" "hca5ca0e1g2bd1g4977g8766g3cd014581c7f;1"
+data "Description" "h5b6f4e2aga544g4bbag96feg8b26b8d634f2;2"
+data "TooltipDamageList" "DealDamage(UnarmedDamage , Bludgeoning)"
+data "TooltipAttackSave" "MeleeUnarmedAttack"
+data "PreviewCursor" "Melee"
+data "CastTextEvent" "Cast"
+data "CycleConditions" "Character() and Enemy() and not Dead()"
+data "UseCosts" "ActionPoint:1"
+data "SpellAnimation" "8b8bb757-21ce-4e02-a2f3-97d55cf2f90b,,;6606c30b-be1c-4f17-ae6b-1a591c80b18c,366693ee-d97f-4294-a4dd-a2145ddc4e6a,9f2d32b9-529a-4b75-b3df-6e1ae1395280;f4ac302b-1569-404f-bd52-1fe443e265df,479ee5da-2967-41e1-b7d1-a94e864a5f25,79323098-edb3-4993-ba50-9b5f705e9878;e8a5c57f-855b-4227-acaa-11e8ce8d7d64,b5cb923d-0c08-4c20-89a9-44b9bf98c6cb,6282d127-0c06-4365-9d53-6f32ef350127;7bb52cd4-0b1c-4926-9165-fa92b75876a3,,;2b81c18b-9698-4262-a623-932c2bb1296d,ecbf9949-3b33-432c-b735-e47aaed0924a,e71a7c08-fdc1-4a0b-9a90-1c793c58553c;0b07883a-08b8-43b6-ac18-84dc9e84ff50,,;,,;,,"
+data "VerbalIntent" "Damage"
+data "SpellFlags" "IsAttack;IsMelee;IsHarmful;DisableBlood"
+data "HitAnimationType" "PhysicalDamage"
+data "SpellAnimationIntentType" "Aggressive"
+data "DamageType" "Bludgeoning"
+data "SpellSoundMagnitude" "None"
+data "Sheathing" "Melee"
+
+new entry "Target_StunningStrike_Unarmed"
+type "SpellData"
+data "SpellType" "Target"
+using "Target_StunningStrike"
+data "SpellRoll" "Attack(AttackType.MeleeWeaponAttack)"
+data "SpellSuccess" "IF(not SavingThrow(Ability.Constitution, ManeuverSaveDC())):ApplyStatus(STUNNED,100,1);DealDamage(UnarmedDamage , Bludgeoning);DealDamage(max(0,MainMeleeWeapon), MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand)"
+data "Icon" "Action_Monk_StunningStrike"
+data "DisplayName" "hadda723bgfc48g48c7ga21bg586272f41179;1"
+data "TooltipDamageList" "DealDamage(MartialArtsUnarmedDamage, Bludgeoning)"
+data "CastSound" "Spell_Cast_Monk_StunningStrike_L1to3"
+data "TargetSound" "Spell_Impact_Monk_StunningStrike_L1to3"
+data "VocalComponentSound" "Vocal_Component_Stop"
+data "SpellAnimation" "4f0a01e4-761d-4236-b789-33c1e7532023,,;203f8bb2-6a8d-4c3c-9927-65bad54d325c,,;c369f7cf-f7ce-47dc-955c-a8aa66068457,,;843f4e10-7239-49f0-92c8-a385b920db93,,;e85be5a8-6e48-4da4-8486-0d168159df4e,,;5f3e4ce3-ccf4-4609-9aa7-684fc6506599,,;0b07883a-08b8-43b6-ac18-84dc9e84ff50,,;c369f7cf-f7ce-47dc-955c-a8aa66068457,,;,,"
+data "WeaponTypes" "Melee"
+data "SpellFlags" "IsAttack;IsMelee;IsHarmful;DisableBlood"
+data "Sheathing" "Sheathed"
+
+new entry "Target_ShadowStrike_Instant_Unarmed"
+type "SpellData"
+data "SpellFlags" "IsAttack;IsMelee;IsHarmful"
+data "SpellType" "Target"
+using "Target_ShadowStrike_Instant"
+data "SpellRoll" "Attack(AttackType.MeleeWeaponAttack)"
+data "SpellSuccess" "DealDamage(max(1,UnarmedDamage), Bludgeoning);ExecuteWeaponFunctors(MainHand);DealDamage(3d8,Psychic,Magical);DealDamage(max(0,MainMeleeWeapon), MainMeleeWeaponDamageType)"
+data "Icon" "Action_ShadowStrike_Unarmed"
+data "DisplayName" "h266c3ab6ge028g4f8eg9e99g3f3ede9c06be;2"
+data "TooltipDamageList" "DealDamage(MartialArtsUnarmedDamage, Bludgeoning);DealDamage(3d8,Psychic)"
+data "TooltipAttackSave" "MeleeUnarmedAttack"
+data "CastSound" "Action_Cast_Monk_ShadowStrike_Unarmed,MAINHAND"
+data "TargetSound" "Action_Impact_Monk_ShadowStrike_Unarmed"
+data "WeaponTypes" "Melee"
+data "Sheathing" "Sheathed"
+
+new entry "Target_KiResonation_Punch"
+type "SpellData"
+data "WeaponTypes" "Melee"
+data "SpellType" "Target"
+using "Target_UnarmedAttack"
+data "SpellProperties" "IF(not Player(context.Source)):ApplyStatus(SELF,AI_HELPER_EXTRAATTACK,100,1);ApplyStatus(SELF,MARTIAL_ARTS_BONUS_UNARMED_STRIKE,100,1)"
+data "SpellSuccess" "DealDamage(UnarmedDamage , Bludgeoning);ApplyStatus(KI_RESONATION, 100, 10);DealDamage(max(0,MainMeleeWeapon), MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand)"
+data "TargetConditions" "Character() and not Self() and not Dead() and not HasStatus('KI_RESONATION')"
+data "Icon" "Action_KiResonation_Punch"
+data "DisplayName" "h899dddabge756g4167g951agd5be8d96a14e;2"
+data "Description" "he3040900g99efg410egb082g32eb2e847245;3"
+data "ExtraDescription" "h7b5f0f66g2330g4167gb6fag4fa79fe81170;1"
+data "TooltipDamageList" "DealDamage(MartialArtsUnarmedDamage, Bludgeoning)"
+data "TooltipStatusApply" "ApplyStatus(KI_RESONATION, 100, 10)"
+data "CastSound" "Action_Cast_Monk_ResonationPunch"
+data "TargetSound" "Action_Impact_Monk_ResonationPunch"
+data "UseCosts" "ActionPoint:1"
+data "DualWieldingUseCosts" "KiPoint:1"
+data "SpellAnimation" "26fe0848-ce88-41c7-8184-4e405936cfd1,,;ca32fa8d-1e79-4c7a-96db-3525441f156e,,;467aa945-7608-4e0c-be9b-abec4a45a92b,,;1d468e19-601d-4443-9d06-2c2a0c20fd66,,;284c7d71-e6b8-4026-8b8f-f4a5da2e3183,,;2b81c18b-9698-4262-a623-932c2bb1296d,,;0b07883a-08b8-43b6-ac18-84dc9e84ff50,,;,,;,,"
+data "VerbalIntent" "Damage"
+data "SpellStyleGroup" "Class"
+data "SpellFlags" "IsAttack;IsMelee;IsHarmful;DisableBlood"
+data "SpellAnimationIntentType" "Peaceful"
+data "PrepareEffect" "37e43b4e-90c4-4868-a592-e8dca6f9c4bd"
+data "CastEffect" "c6ae7e9f-d5ed-48ed-aba6-6ed8de89d2c6"
+data "HitEffect" "0c640990-d32a-4bc5-9879-3314340523bb"
+data "Sheathing" "Sheathed"

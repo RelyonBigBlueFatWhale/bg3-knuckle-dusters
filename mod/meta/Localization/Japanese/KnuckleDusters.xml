@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<contentList>
+	<content contentuid="h6504b930gf358g4889g938cg7eaa90df79af" version="1">鋼棘の拳</content>
+	<content contentuid="hf40daf82gd785g4612g9fe2gbe012e9846f5" version="1">棘のついた鋼のナックルダスター。メインハンドでの攻撃は依然として素手攻撃として扱われる。棘は命中時に肉を裂く。</content>
+	<content contentuid="h4286f685g0c99g44a8g8821ga2a247361b8d" version="1">骨の凍気</content>
+	<content contentuid="hef75a393g9ecbg4243g8a8fg1bb932c8da71" version="1">冷気から鍛えられたナックルダスター。濡れた目標に対しては、冷気が骨まで染み込む。</content>
+	<content contentuid="h8fc8470egf624g4266ga9dcg8368d8df1df9" version="1">刃なきもの</content>
+	<content contentuid="h08c974e9g87b2g480eg815cgfa295c1ae55d" version="1">刃は一切なく、ただ質量のみ。かつてプレートアーマーごと、中の人間ごと鉄屑に変えたという。</content>
+	<content contentuid="h0011a0abg57c7g43e8g8f71gb0a8ec398445" version="1">鋼の拳</content>
+	<content contentuid="h2637f832g0cd9g49b4gb8afgce8d87a2e42c" version="1">この武器によるメインハンドの攻撃は素手攻撃として扱われる。</content>
+	<content contentuid="h26d44774g24d6g43f4gb606g2a91b9618fe9" version="1">鋼の爪</content>
+	<content contentuid="h9572dfa4g3098g4547g8fa8g9d6c22c4418e" version="1">素手攻撃は追加で1d4の刺突ダメージを与え、20%の確率で2ターンの出血を付与する。</content>
+	<content contentuid="hd526e1deg48a6g4e5ag8f5eg09447aa6f787" version="1">突き刺す冷気</content>
+	<content contentuid="h18c6f016g93e0g41c4gaab7g6f710dd22728" version="1">素手攻撃は追加で1d6の冷気ダメージを与える。濡れた目標には2d6。</content>
+	<content contentuid="h66008c7cg95c8g425bg9cc4gd6d504715d6f" version="1">殻砕き</content>
+	<content contentuid="h9e163f1dg7e7fg4acfga1dbgb6480bb117f6" version="1">素手攻撃は追加で2d10の殴打ダメージを与え、3ターンの破砕を付与する。</content>
+	<content contentuid="h27456ed8g689fg455bgb82fg5728a2337fa4" version="1">ナックルストライク</content>
+	<content contentuid="h548a5901g11b5g440fga3ecgce7dfb42063c" version="1">ナックルダスターによる近接攻撃。素手攻撃として処理される。</content>
+	<content contentuid="ha1bb7f91g7120g4892g95c9gf0685d51e6c4" version="1">破砕</content>
+	<content contentuid="hca0d6f4bg51cfg49ebga6c6g0fbb01bdf456" version="1">殴打ダメージに脆弱。2スタックで、抵抗を持つ目標さえもろくなる。</content>
+</contentList>

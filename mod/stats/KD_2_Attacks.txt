@@ -1,0 +1,72 @@
+// ============================================================================
+// 指虎攻击：整条从原版徒手攻击 Target_UnarmedAttack 派生（不是从武器攻击派生）
+// 关键：WeaponTypes "None" —— 原版 Target_ShadowStrike_Instant_Unarmed 就是靠它 + 徒手 AttackType 翻面的
+// 与武器版 Target_MainHandAttack 的差别：武器版是 WeaponTypes "Melee"，那会让引擎仍按武器攻击结算
+//
+// ── 2026-10-17 修订 ─────────────────────────────────────────────────────────
+// ① 动作消耗：显式写死 UseCosts "ActionPoint:1" / DualWieldingUseCosts。
+//    原版 Target_MainHandAttack 就是这两行（+ SpellFlags "IsAttack;IsMelee;IsHarmful;CanDualWield"）。
+//    不写会依赖父条目继承，实测表现为装备后主手攻击改吃附赠动作。
+// ② 额外打击兼容：原版 ExtraAttack 被动（Passive.txt）的触发条件里有一条
+//    `HasUseCosts('ActionPoint', true)` —— 攻击法术必须真的声明"消耗动作"，
+//    额外打击才会排队。所以这一行同时是"动作消耗"和"额外打击"的同一个开关。
+// ③ 疾风连击 / 附赠打击：原版**没有** Target_FlurryOfBlows 与 Target_UnarmedStrike_Monk
+//    这两个条目（Shared / Gustav 两层都查过），真正的条目是 Target_Flurry 与 Target_UnarmedAttack。
+//    之前那两条 AttackSpellOverride 一直指向不存在的名字 ⇒ 空转 ⇒ 疾风连击跑的是原版法术
+//    （纯 UnarmedDamage、没有 ExecuteWeaponFunctors），于是元素武器/神圣武器这类
+//    CharacterWeaponDamage 附伤在疾风连击上完全不生效。覆盖名已修正，见 KD_3_Statuses.txt。
+// ④ 疾风连击的 UseCosts 照抄原版 Target_Flurry = ActionPoint:1：真正的气点+附赠动作由
+//    调用它的武僧动作扣，本法术自己只报一个名义动作费。抄原版结构，不自己发明。
+// ============================================================================
+
+new entry "Target_KD_Attack"
+type "SpellData"
+using "Target_UnarmedAttack"
+data "SpellRoll" "Attack(AttackType.MeleeWeaponAttack)"
+data "WeaponTypes" "Melee"
+data "SpellSuccess" "DealDamage(max(1,UnarmedDamage), Bludgeoning);DealDamage(max(1,MainMeleeWeapon), MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand)"
+data "TooltipDamageList" "DealDamage(MartialArtsUnarmedDamage, Bludgeoning);DealDamage(MainMeleeWeapon, MainMeleeWeaponDamageType)"
+data "TooltipAttackSave" "MeleeUnarmedAttack"
+data "UseCosts" "ActionPoint:1"
+data "DualWieldingUseCosts" "BonusActionPoint:1"
+data "SpellFlags" "IsAttack;IsMelee;IsHarmful;CanDualWield;DisableBlood"
+data "DisplayName" "h27456ed8g689fg455bgb82fg5728a2337fa4;1"
+data "Description" "h548a5901g11b5g440fga3ecgce7dfb42063c;1"
+data "CastEffect" "9d8f170e-35d7-4cdb-b1f9-5493cf771b19"
+data "PrepareSound" "Vocal_Component_Monk_Damage"
+data "CastSound" "Spell_Cast_Monk_UnarmedStrike_L1to3"
+data "TargetSound" "Spell_Impact_Monk_UnarmedStrike_L1to3"
+data "Sheathing" "DontChange"
+
+new entry "Target_KD_Attack_Rare"
+type "SpellData"
+using "Target_KD_Attack"
+data "SpellSuccess" "DealDamage(max(1,UnarmedDamage), Bludgeoning);DealDamage(max(1,MainMeleeWeapon), MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand);ApplyStatus(KD_BLEED_CHECK,100,1)"
+
+new entry "Target_KD_Attack_VeryRare"
+type "SpellData"
+using "Target_KD_Attack"
+
+new entry "Target_KD_Attack_Legendary"
+type "SpellData"
+using "Target_KD_Attack"
+data "SpellSuccess" "DealDamage(max(1,UnarmedDamage), Bludgeoning);DealDamage(max(1,MainMeleeWeapon), MainMeleeWeaponDamageType);ExecuteWeaponFunctors(MainHand)"
+
+// 顶掉原版：Target_Flurry（不是 Target_FlurryOfBlows —— 那个名字不存在）
+// 双打结构照抄我们已验证的 Cast2 写法；UseCosts 继承 Target_KD_Attack 的 ActionPoint:1，
+// 与父法术 Target_Flurry 一致，真正的气点/附赠动作由武僧动作扣。
+new entry "Target_KD_Flurry"
+type "SpellData"
+using "Target_KD_Attack"
+data "SpellRoll" "Attack(AttackType.MeleeUnarmedAttack);Cast2[Attack(AttackType.MeleeUnarmedAttack)]"
+
+// 顶掉原版：Target_UnarmedAttack（武艺：附赠打击走的就是这支）
+// 单打结构；消耗同样继承 ActionPoint:1，由武僧特性扣成附赠动作。
+new entry "Target_KD_UStrike"
+type "SpellData"
+using "Target_KD_Attack"
+data "SpellRoll" "Attack(AttackType.MeleeWeaponAttack)"
+// 单独命名：否则它会继承 Target_KD_Attack 的显示名，界面上出现两个"指虎攻击"，
+// 一个是动作、一个是附赠动作，根本分不清哪个出问题。
+data "DisplayName" "h27456ed8g689fg455bgb82fg5728a2337fa4;1"
+data "Description" "h548a5901g11b5g440fga3ecgce7dfb42063c;1"

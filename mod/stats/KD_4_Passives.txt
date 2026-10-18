@@ -1,0 +1,76 @@
+// ============================================================================
+// 被动只做展示（Highlighted，无机制）。
+// 附伤已经全部搬进攻击法术的 SpellSuccess —— 实测用被动 OnDamage/OnAttack 里的 DealDamage
+// 打出的独立伤害实例不参与抗性/易伤结算（碎甲只影响了基础钝击伤害）。
+// ============================================================================
+
+new entry "KD_SteelFist"
+type "PassiveData"
+data "DisplayName" "h0011a0abg57c7g43e8g8f71gb0a8ec398445;1"
+data "Description" "h2637f832g0cd9g49b4gb8afgce8d87a2e42c;1"
+data "Icon" "Action_UnarmedAttack"
+data "Properties" "Highlighted"
+
+new entry "KD_Trait_Claw"
+type "PassiveData"
+data "DisplayName" "h26d44774g24d6g43f4gb606g2a91b9618fe9;1"
+data "Description" "h9572dfa4g3098g4547g8fa8g9d6c22c4418e;1"
+data "Icon" "Action_UnarmedAttack"
+data "Properties" "Highlighted"
+
+new entry "KD_Trait_Chill"
+type "PassiveData"
+data "DisplayName" "hd526e1deg48a6g4e5ag8f5eg09447aa6f787;1"
+data "Description" "h18c6f016g93e0g41c4gaab7g6f710dd22728;1"
+data "Icon" "Action_UnarmedAttack"
+data "Properties" "Highlighted"
+
+new entry "KD_Trait_Shell"
+type "PassiveData"
+data "DisplayName" "h66008c7cg95c8g425bg9cc4gd6d504715d6f;1"
+data "Description" "h9e163f1dg7e7fg4acfga1dbgb6480bb117f6;1"
+data "Icon" "Action_UnarmedAttack"
+data "Properties" "Highlighted"
+
+new entry "KD_Rider_Claw"
+type "PassiveData"
+data "DisplayName" "h26d44774g24d6g43f4gb606g2a91b9618fe9;1"
+data "Description" "h9572dfa4g3098g4547g8fa8g9d6c22c4418e;1"
+data "Icon" "statIcons_Mag_Attack_Debuff"
+data "Properties" "IsHidden"
+data "Boosts" "IF(IsMeleeUnarmedAttack()):CharacterUnarmedDamage(1d4, Piercing)"
+
+new entry "KD_Rider_Chill"
+type "PassiveData"
+data "DisplayName" "hd526e1deg48a6g4e5ag8f5eg09447aa6f787;1"
+data "Description" "h18c6f016g93e0g41c4gaab7g6f710dd22728;1"
+data "Icon" "statIcons_Mag_Attack_Debuff"
+data "Properties" "IsHidden"
+data "Boosts" "IF(IsMeleeUnarmedAttack()):CharacterUnarmedDamage(1d6, Cold);IF(IsMeleeUnarmedAttack() and HasStatus('WET', context.Target)):CharacterUnarmedDamage(1d6, Cold)"
+
+new entry "KD_Rider_Shell"
+type "PassiveData"
+data "DisplayName" "h66008c7cg95c8g425bg9cc4gd6d504715d6f;1"
+data "Description" "h9e163f1dg7e7fg4acfga1dbgb6480bb117f6;1"
+data "Icon" "statIcons_Mag_Attack_Debuff"
+data "Properties" "IsHidden"
+data "Boosts" "IF(IsMeleeUnarmedAttack()):CharacterUnarmedDamage(2d10, Bludgeoning)"
+
+// ============================================================================
+// 武器侧附伤 → 徒手通道 桥接被动（2026-10-18）
+//
+// 原理：BG3 有两套附伤通道
+//     CharacterWeaponDamage(...)  角色侧，并入"武器伤害"掷骰
+//     WeaponDamage(...)           武器侧 functor，靠武器伤害掷骰触发
+// 指虎的攻击按徒手结算（这是本 mod 的设计，为了拿酒馆殴斗者与武艺），
+// 徒手伤害里没有"武器伤害"这一项 ⇒ 上面两道通道都取不到值。
+//
+// 5eSpells 自己解决这个问题的方式是"同时写两条通道"，例如
+//     CharacterWeaponDamage(1d6,Fire);CharacterUnarmedDamage(1d6,Fire)
+// 但下列状态只写了武器侧，所以在指虎这类徒手攻击上一律静默失效。
+// 这里给每一条补上等值的徒手通道；每行都带 HasStatus 判定，
+// 只有该状态真的在身时才生效，因此不会与任何东西叠加。
+//
+// 逐条枚举依据：原版 Shared/Status_*.txt 与 5eSpells/Status_*.txt 里
+// 所有 Boosts 含 WeaponDamage( 且没有 CharacterUnarmedDamage 的条目
+// （AI_HELPER_* 是 AI 专用、OIL_OF_SHARPNESS_RANGED 是远程，均已排除）。

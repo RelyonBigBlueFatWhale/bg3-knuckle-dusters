@@ -1,0 +1,27 @@
+// ============================================================================
+// 无锋的「剥壳」：命中即施加钝击易伤（2026-10-18）
+//
+// 之前剥壳写在 Target_KD_Attack_Legendary.SpellSuccess 里，所以只有主手攻击会触发；
+// 疾风连击与武艺：徒手打击走的是另外三支法术，自然吃不到。
+//
+// 现在的做法是把剥壳搬到**武器被动**上，用原版的 OnDamage 机制：
+//   StatsFunctorContext "OnDamage"
+//   StatsFunctors       "ApplyStatus(<目标状态>,100,3)"
+// 照抄对象：ALCH_Oil_Frost_Passive（OnDamage → ApplyStatus(MAG_FROST,100,2)）、
+//           ALCH_Oil_Bane_Passive（OnDamage → IF(not SavingThrow(...)):ApplyStatus(...)）。
+//
+// 好处有三个：
+//   ① 天然只对无锋生效 —— 被动挂在这件武器上，其它角色/其它武器完全不受影响；
+//      （条件门控 HasStatus 已被实测证明不可靠，这里根本不需要它）
+//   ② 覆盖一切命中途径：主手攻击、三支疾风连击变体、武艺：徒手打击、借机攻击；
+//   ③ 与伤害数值解耦 —— 不再依赖某支法术的 SpellSuccess 里有没有写。
+//
+// 注意：StatsFunctors 里不带 SELF 前缀的 ApplyStatus 作用对象是**被伤害的一方**，
+// 这正是我们要的；带 SELF 的是自己（见 ALCH_Elixir_Bloodlust_Passive）。
+// ============================================================================
+
+new entry "KD_BreakOnHit"
+type "PassiveData"
+data "Properties" "IsHidden"
+data "StatsFunctorContext" "OnDamage"
+data "StatsFunctors" "ApplyStatus(KD_ARMORBREAK_1,100,3)"

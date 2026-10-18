@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<save>
+	<version major="4" minor="0" revision="6" build="5" lslib_meta="v1,bswap_guids" />
+	<region id="Templates">
+		<node id="Templates">
+			<children>
+				<node id="GameObjects">
+					<attribute id="Description" type="TranslatedString" handle="hf40daf82gd785g4612g9fe2gbe012e9846f5" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="h6504b930gf358g4889g938cg7eaa90df79af" version="1" />
+					<attribute id="EquipmentTypeID" type="guid" value="2d85d633-d496-44a1-a643-0e95ef879a6d" />
+					<attribute id="Icon" type="FixedString" value="KD_Item_Knuckle_Steel_Spike" />
+					<attribute id="LevelName" type="FixedString" value="" />
+					<attribute id="MapKey" type="FixedString" value="d6476755-6fb1-4752-91e4-a51ada4747da" />
+					<attribute id="Name" type="LSString" value="KD_SteelSpikeFist" />
+					<attribute id="ParentTemplateId" type="FixedString" value="569b0f3d-abcd-4b01-aaf0-979091288163" />
+					<attribute id="PhysicsTemplate" type="FixedString" value="76fd694e-35c8-9109-0d8c-78bf8e107c76" />
+					<attribute id="Stats" type="FixedString" value="KD_SteelSpikeFist" />
+					<attribute id="Type" type="FixedString" value="item" />
+					<attribute id="VisualTemplate" type="FixedString" value="a1f3c2e4-5b6d-4e7f-8a90-1b2c3d4e5f60" />
+				</node>
+				<node id="GameObjects">
+					<attribute id="Description" type="TranslatedString" handle="hef75a393g9ecbg4243g8a8fg1bb932c8da71" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="h4286f685g0c99g44a8g8821ga2a247361b8d" version="1" />
+					<attribute id="EquipmentTypeID" type="guid" value="2d85d633-d496-44a1-a643-0e95ef879a6d" />
+					<attribute id="Icon" type="FixedString" value="KD_Item_Knuckle_Bone_Chill" />
+					<attribute id="LevelName" type="FixedString" value="" />
+					<attribute id="MapKey" type="FixedString" value="94187658-a74c-4e44-a709-b3526ef1fbfd" />
+					<attribute id="Name" type="LSString" value="KD_BoneChill" />
+					<attribute id="ParentTemplateId" type="FixedString" value="569b0f3d-abcd-4b01-aaf0-979091288163" />
+					<attribute id="PhysicsTemplate" type="FixedString" value="76fd694e-35c8-9109-0d8c-78bf8e107c76" />
+					<attribute id="Stats" type="FixedString" value="KD_BoneChill" />
+					<attribute id="Type" type="FixedString" value="item" />
+					<attribute id="VisualTemplate" type="FixedString" value="b2e4d3f5-6c7e-4f80-9ab1-2c3d4e5f6071" />
+				</node>
+				<node id="GameObjects">
+					<attribute id="Description" type="TranslatedString" handle="h08c974e9g87b2g480eg815cgfa295c1ae55d" version="1" />
+					<attribute id="DisplayName" type="TranslatedString" handle="h8fc8470egf624g4266ga9dcg8368d8df1df9" version="1" />
+					<attribute id="EquipmentTypeID" type="guid" value="2d85d633-d496-44a1-a643-0e95ef879a6d" />
+					<attribute id="Icon" type="FixedString" value="KD_Item_Knuckle_Unsharpened" />
+					<attribute id="LevelName" type="FixedString" value="" />
+					<attribute id="MapKey" type="FixedString" value="7e69ee66-6202-42b3-8e17-b587fd9a0276" />
+					<attribute id="Name" type="LSString" value="KD_Unsharpened" />
+					<attribute id="ParentTemplateId" type="FixedString" value="569b0f3d-abcd-4b01-aaf0-979091288163" />
+					<attribute id="PhysicsTemplate" type="FixedString" value="76fd694e-35c8-9109-0d8c-78bf8e107c76" />
+					<attribute id="Stats" type="FixedString" value="KD_Unsharpened" />
+					<attribute id="Type" type="FixedString" value="item" />
+					<attribute id="VisualTemplate" type="FixedString" value="c3f5e406-7d8f-4081-abc2-3d4e5f607182" />
+				</node>
+			</children>
+		</node>
+	</region>
+</save>
